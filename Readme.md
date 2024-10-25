@@ -69,6 +69,9 @@ Dietary Remix is a web application that leverages AI to transform recipes based 
 ```bash
     API_KEY='YOUR_KEY'
 ```
+docker run -p 47334:47334 mindsdb/mindsdb
+mindsdb --api=http://127.0.0.1:47334
+
 4. **Create and populate the SQLite database**:
     ```bash
     python data.py
