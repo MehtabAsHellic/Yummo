@@ -7,11 +7,9 @@ load_dotenv()
 
 GEMINI_API_KEY = os.getenv('API_KEY')
 
-
 server = mindsdb_sdk.connect()
 
 gemini_handler = server.ml_handlers.google_gemini
-
 
 
 def get_gemini_engine():
