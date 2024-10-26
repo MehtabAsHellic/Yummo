@@ -43,8 +43,11 @@ def handle_errors(f):
 # Initialize the model
 model = initialize_gemini()
 
+@app.route('/')
+def home():
+    return render_template('home.html')
 # Routes
-@app.route('/', methods=['GET'])
+@app.route('/index', methods=['GET'])
 def index():
     return render_template('index.html')
 
@@ -73,40 +76,58 @@ def transform_recipe():
     Place: {place}
     Desired Calories: {calories}
     
-    Please provide a modified version that follows the diet requirements while maintaining the essence of the original recipe and it must be available at the Place and must not include the allergy contents and it must be in the range of desired calories. Also mention the calories and protein content in the input recipe and the generated recipe"""
+    Please provide a modified version that follows the diet requirements while maintaining the essence of the original recipe and it must be available at the Place and must not include the allergy contents and it must be in the range of desired calories."""
     
-    prompt_costs = f"""Calculate the initial cost of preparation and reduced cost of preparation for the following recipe:
-    Name: {recipe_name}
-    Recipe: {original_recipe_text}
-    Diet: {diet}
-    Allergy: {allergy}
-    Place: {place}"""
     
-    prompt_nutrition = f"""Provide the nutritional information (initial protein and calorie content) for the following recipe:
-    Name: {recipe_name}
-    Recipe: {original_recipe_text}"""
+    
 
     try:
         response = model.generate_content(prompt)
-        transformed_recipe = response.text
+        transform_recipe = response.text
+
+        prompt_costs = f"""Calculate the cost of preparation for the initial recipe and cost of preparation for the generated recipe in indian rupees in tabular format:
+        Name: {recipe_name}
+        initial Recipe: {original_recipe_text}
+        Generated recipe: {transform_recipe}
+        """
 
         response_costs = model.generate_content(prompt_costs)
         costs_info = response_costs.text
 
+        prompt_nutrition = f"""Provide the nutritional information for the initial recipe and for the generated recipe in tabular format:
+        Name: {recipe_name}
+        Initial Recipe: {original_recipe_text}
+        Generated Recipe: {transform_recipe}
+        """
+        
         # Call 3: Nutrition information
         response_nutrition = model.generate_content(prompt_nutrition)
         nutrition_info = response_nutrition.text
 
+        calories = f"""calculate the calories for the initial recipe and calories for the generated recipe  in tabular format:
+        Name: {recipe_name}
+        Initial Recipe: {original_recipe_text}
+        Generated Recipe: {transform_recipe}
+        """
+        
+        # Call 3: Nutrition information
+        response_calories = model.generate_content(calories)
+        calories_info = response_calories.text
+        
+
+        print(transform_recipe)
+        print(costs_info)
+        print(nutrition_info)
+        print(calories_info)
+
         return jsonify({
             "costs_info": costs_info,
             "nutrition_info": nutrition_info,
-            "diet": diet,
-            "allergy": allergy,
-            "place": place,
-            "calories": calories,
-            "recipe_name": recipe_name,
+            "calories": calories_info,
             "original_recipe": original_recipe_text,
-            "transformed_recipe": transformed_recipe,
+            "transformed_recipe": transform_recipe,
+            "recipe_name": recipe_name,
+            "diet": diet,
         })
 
     except Exception as e:

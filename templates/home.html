@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yummo - Your Ultimate Recipe Companion</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTTXRNz1E87pKk93ZZx6XJNDcFG6lLOuFuf7ru08hkV5GldJZxkIh+H1KoFaT80ikTTl+NJxYg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Header */
+        header {
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            height: 100vh;
+            position: relative;
+            color: #fff;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffdd57;
+        }
+
+        .hero {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ffdd57;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .hero .cta-btn {
+            background-color: #ff6347;
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .hero .cta-btn:hover {
+            background-color: #ff4500;
+            transform: translateY(-3px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 60px 10%;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .features .feature-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .feature {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .feature i {
+            font-size: 3rem;
+            color: #ff6347;
+            margin-bottom: 15px;
+        }
+
+        .feature h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .feature p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* About Section */
+        .about {
+            padding: 60px 10%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .about img {
+            flex: 1 1 400px;
+            border-radius: 10px;
+        }
+
+        .about-content {
+            flex: 1 1 400px;
+        }
+
+        .about-content h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .about-content p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 60px 10%;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .testimonials h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .testimonial-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .testimonial {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .testimonial::before {
+            content: '“';
+            font-size: 3rem;
+            color: #ff6347;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+        }
+
+        .testimonial p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .testimonial h4 {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        /* Call to Action Section */
+        .cta {
+            padding: 60px 10%;
+            text-align: center;
+            background-color: #ff6347;
+            color: #fff;
+        }
+
+        .cta h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .cta .cta-btn {
+            background-color: #fff;
+            color: #ff6347;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .cta .cta-btn:hover {
+            background-color: #ffe5d9;
+            color: #ff4500;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            padding: 20px 10%;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        footer .socials a {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        footer .socials a:hover {
+            color: #ff6347;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                background-color: rgba(0,0,0,0.7);
+                position: absolute;
+                top: 60px;
+                right: 10%;
+                width: 200px;
+                display: none;
+                border-radius: 10px;
+                padding: 10px 0;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            nav .menu-toggle {
+                display: block;
+                cursor: pointer;
+                font-size: 1.5rem;
+            }
+
+            .about {
+                flex-direction: column;
+            }
+
+            .feature-grid, .testimonial-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .features h2,
+            .about-content h2,
+            .testimonials h2,
+            .cta h2 {
+                font-size: 2rem;
+            }
+
+            .features .feature, 
+            .testimonial {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <div class="logo">Yummo</div>
+            <i class="fas fa-bars menu-toggle"></i>
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                
+            </ul>
+        </nav>
+        <div class="hero">
+            <h1>Welcome to Yummo</h1>
+            <p>Your ultimate companion for discovering, sharing, and enjoying delicious recipes from around the world.</p>
+            <button class="cta-btn" onclick="window.location.href='{{ url_for('index') }}'">Get Started</button>
+        </body>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2>Our Features</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <i class="fas fa-utensils"></i>
+                <h3>Extensive Recipe Collection</h3>
+                <p>Access thousands of recipes from various cuisines, tailored to your taste and dietary preferences.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-plus-circle"></i>
+                <h3>Add Your Own Recipes</h3>
+                <p>Share your culinary creations with the Yummo community and inspire others to cook.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobile Friendly</h3>
+                <p>Enjoy seamless experience across all your devices, whether you're at home or on the go.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-heart"></i>
+                <h3>Favorite & Save</h3>
+                <p>Save your favorite recipes and access them anytime, anywhere with a single click.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-comments"></i>
+                <h3>Community Support</h3>
+                <p>Engage with fellow food enthusiasts, share tips, and get feedback on your recipes.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-chart-line"></i>
+                <h3>Nutrition Information</h3>
+                <p>Get detailed nutritional information for every recipe to maintain a balanced diet.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=600&w=600" alt="About Yummo">
+        <div class="about-content">
+            <h2>About Yummo</h2>
+            <p>At Yummo, our mission is to bring people together through the love of food. Whether you're a seasoned chef or a kitchen novice, Yummo provides you with the tools and community to explore, create, and share delectable recipes. Our platform is designed to inspire your culinary adventures, making cooking enjoyable and accessible for everyone.</p>
+            <p>Join us in celebrating the art of cooking and discover endless possibilities to tantalize your taste buds!</p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <h2>What Our Users Say</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <p>"Yummo has revolutionized the way I cook! The variety of recipes is incredible, and I love sharing my own creations with the community."</p>
+                <h4>- Aditya</h4>
+            </div>
+            <div class="testimonial">
+                <p>"As someone with dietary restrictions, Yummo's filtering options make it so easy to find recipes that suit my needs. Highly recommend!"</p>
+                <h4>- Vishal</h4>
+            </div>
+            <div class="testimonial">
+                <p>"The mobile app is fantastic! I can access my favorite recipes anytime, anywhere, which is perfect for on-the-go cooking."</p>
+                <h4>- Syed</h4>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta" id="cta">
+        <h2>Ready to Cook?</h2>
+        <p>Join thousands of food enthusiasts and start your culinary journey with Yummo today!</p>
+        <button class="cta-btn">Sign Up Now</button>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="socials">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+        </div>
+        <p>&copy; 2024 Yummo. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Toggle Navigation Menu on Mobile
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navUl = document.querySelector('nav ul');
+
+        menuToggle.addEventListener('click', () => {
+            navUl.classList.toggle('show');
+        });
+
+        // Smooth Scrolling
+        const links = document.querySelectorAll('nav ul li a, .hero .cta-btn, .cta .cta-btn');
+
+        for (const link of links) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                const headerOffset = 70;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+
+                // Close the menu if open (on mobile)
+                if(navUl.classList.contains('show')) {
+                    navUl.classList.remove('show');
+                }
+            });
+        }
+
+        // Handle Clicks on CTA Buttons (for demonstration purposes)
+        
+    </script>
+    <style>
+        /* Additional Styles for Responsive Navigation */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background-color: rgba(0,0,0,0.8);
+                position: absolute;
+                top: 60px;
+                right: 10%;
+                width: 200px;
+                border-radius: 10px;
+                padding: 10px 0;
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 15px 0;
+                text-align: center;
+            }
+
+            .menu-toggle {
+                display: block;
+                color: #fff;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .menu-toggle {
+                display: none;
+            }
+        }
+    </style>
+</body>
+</html>
