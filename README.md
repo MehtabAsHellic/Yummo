@@ -39,7 +39,7 @@
 ## Technology Stack
 - **Backend**: Python with Flask framework
 - **Database**: SQLite for local storage
-- **AI Integration**: MindsDB with Google Gemini Pro Model
+- **AI Integration**: MindsDB 
 - **Frontend**: HTML, CSS, JavaScript (jQuery)
 - **API**: RESTful API endpoints for recipe management and transformation
 
