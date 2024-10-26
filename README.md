@@ -1,12 +1,9 @@
 
-# Dietary Remix - Your DIet Buddy 🥑💪
+# Yummo: Bringing People Together Through Food
 
 ## Overview
 
 Dietary Remix is a web application that leverages AI to transform recipes based on different dietary requirements. It allows users to input recipes and convert them to various diets such as vegan, keto, gluten-free. The application uses MindsDB with Google's Gemini Pro model to perform intelligent recipe transformations while maintaining the essence and flavor profile of the original recipe.
-
-[![Quira Vote](https://img.shields.io/badge/Quira-View%20Repo-blue)](https://quira.sh/repo/FaycalZM-dietary-remix-828689730?utm_source=copy&utm_share_context=rdp)
-
 
 ## Table of Contents 📑
 
@@ -39,7 +36,7 @@ Dietary Remix is a web application that leverages AI to transform recipes based 
 
 ## YouTube Demonstration
 
-[Watch the video](https://www.youtube.com/watch?v=kuW1enQS0do)
+[Watch the video](https://www.youtube.com/watch?v=rqy8YLz9l-w)
 
 
 ## Requirements
