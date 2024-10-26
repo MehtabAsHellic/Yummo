@@ -4,21 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Transformer</title>
+    <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Marked.js CDN for Markdown Parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
-        h1, h2 { color: #333; }
-        form { margin-bottom: 20px; }
-        label { display: block; margin-top: 10px; }
-        input[type="text"], textarea, select { width: 100%; padding: 8px; margin-top: 5px; }
-        button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; margin-top: 10px; }
-        button:hover { background-color: #45a049; }
-        #result { background-color: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-top: 20px; }
+        /* General Styles */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            line-height: 1.6; 
+            padding: 20px; 
+            background-color: #f4f4f4;
+        }
+        h1, h2 { 
+            color: #333; 
+        }
+        form { 
+            background: #fff; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        label { 
+            display: block; 
+            margin-top: 10px; 
+            font-weight: bold;
+        }
+        input[type="text"], textarea, select, input[type="number"] { 
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 5px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button { 
+            background-color: #4CAF50; 
+            color: white; 
+            padding: 10px 15px; 
+            border: none; 
+            cursor: pointer; 
+            margin-top: 15px; 
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button:hover { 
+            background-color: #45a049; 
+        }
+        
+        /* Result Section Styles */
+        #result {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+        }
+        #result h3 {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h4 {
+            color: #333;
+            margin-bottom: 10px;
+            border-left: 4px solid #4CAF50;
+            padding-left: 10px;
+        }
+        .section p, .section pre {
+            margin: 5px 0;
+        }
+        .highlight {
+            background-color: #e8f5e9;
+            padding: 10px;
+            border-left: 4px solid #4CAF50;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        /* Styling parsed Markdown content */
+        .markdown-content {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+        .markdown-content h5 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .markdown-content ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        .markdown-content ol {
+            list-style-type: decimal;
+            margin-left: 20px;
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            /* Adjustments for smaller screens if needed */
+        }
     </style>
 </head>
 <body>
     <h1>Recipe Transformer</h1>
     
+    <!-- Add Recipe Form -->
     <h2>Add New Recipe to Database</h2>
     <form id="addRecipeForm">
         <label for="add_recipe_name">Recipe Name:</label>
@@ -30,6 +128,7 @@
         <button type="submit">Add Recipe to Database</button>
     </form>
 
+    <!-- Transform Recipe Form -->
     <h2>Transform Recipe</h2>
     <form id="transformRecipeForm">
         <label for="transform_recipe_name">Recipe Name:</label>
@@ -49,47 +148,132 @@
         </select>
 
         <label for="allergy">Allergy:</label>
-        <textarea id="allergy" name="Allergy" rows="4" required></textarea>
+        <textarea id="allergy" name="Allergy" rows="2" required placeholder="e.g., nuts, dairy"></textarea>
 
         <label for="place">Place:</label>
-        <textarea id="place" name="Place" rows="4" required></textarea>
+        <textarea id="place" name="Place" rows="2" required placeholder="e.g., Mumbai"></textarea>
 
-        <label for="calories">Calories:</label>
-        <textarea id="calories" name="Calories" rows="4" required></textarea>
-
+        <label for="calories">Desired Calories:</label>
+        <input type="number" id="calories" name="Calories" required min="0" placeholder="e.g., 300">
 
         <button type="submit">Transform Recipe</button>
     </form>
 
-    <div id="result"></div>
+    <!-- Result Section -->
+    <div id="result">
+        <h3>Transformed Recipe</h3>
+        
+        <div class="section">
+            <h4>Recipe Details</h4>
+            <p><strong>Recipe Name:</strong> <span id="display_recipe_name"></span></p>
+          
+        </div>
+
+        <div class="section">
+            <h4>Original Recipe</h4>
+            <div id="display_original_recipe" class="markdown-content"></div>
+        </div>
+
+        <div class="section">
+            <h4>Transformed Recipe</h4>
+            <div id="display_transformed_recipe" class="markdown-content"></div>
+        </div>
+
+        <div class="section">
+            <h4>Costs Information</h4>
+            <div id="display_costs_info" class="markdown-content"></div>
+        </div>
+
+        <div class="section">
+            <h4>Nutritional Information</h4>
+            <div id="display_nutrition_info" class="markdown-content"></div>
+        </div>
+
+        <div class="section">
+            <h4>Calories Information</h4>
+            <div id="display_calories_info" class="markdown-content"></div>
+        </div>
+    </div>
 
     <script>
         $(document).ready(function() {
             // Add recipe form submission
             $('#addRecipeForm').submit(function(e) {
                 e.preventDefault();
-                $.post('/add_recipe', $(this).serialize(), function(data) {
-                    alert('Recipe added successfully to the database!');
-                    $('#addRecipeForm')[0].reset();
+                $.ajax({
+                    type: 'POST',
+                    url: '/add_recipe',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        alert('Recipe added successfully to the database!');
+                        $('#addRecipeForm')[0].reset();
+                    },
+                    error: function(xhr) {
+                        if(xhr.responseJSON && xhr.responseJSON.error){
+                            alert('Error: ' + xhr.responseJSON.error);
+                        } else {
+                            alert('An unknown error occurred while adding the recipe.');
+                        }
+                    }
                 });
             });
 
             // Transform recipe form submission
             $('#transformRecipeForm').submit(function(e) {
                 e.preventDefault();
-                $.post('/transform_recipe', $(this).serialize(), function(data) {
-                    $('#result').html(
-                        '<h3>Transformed Recipe</h3>' +
-                        '<p><strong>Original Recipe Name:</strong> ' + data.recipe_name + '</p>' +
-                        '<p><strong>Diet:</strong> ' + data.diet + '</p>' +
-                        '<p><strong>Original Recipe:</strong></p>' +
-                        '<pre>' + data.original_recipe + '</pre>' +
-                        '<p><strong>Transformed Recipe:</strong></p>' +
-                        '<pre>' + data.transformed_recipe + '</pre>'
-    
-                    );
+                $.ajax({
+                    type: 'POST',
+                    url: '/transform_recipe',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if(response.error){
+                            alert('Error: ' + response.error);
+                            return;
+                        }
+
+                        // Populate Recipe Details
+                        $('#display_recipe_name').text(response.recipe_name || 'N/A');
+                        $('#display_diet').text(response.diet ? capitalizeFirstLetter(response.diet) : 'N/A');
+                        $('#display_place').text(response.place || 'N/A');
+                        $('#display_allergy').text(response.allergy || 'N/A');
+                        $('#display_calories').text(response.calories || 'N/A');
+
+                        // Populate Original Recipe
+                        $('#display_original_recipe').html(marked.parse(response.original_recipe || ''));
+
+                        // Populate Transformed Recipe
+                        $('#display_transformed_recipe').html(marked.parse(response.transformed_recipe || ''));
+
+                        // Populate Costs Information
+                        $('#display_costs_info').html(marked.parse(response.costs_info || ''));
+
+                        // Populate Nutritional Information
+                        $('#display_nutrition_info').html(marked.parse(response.nutrition_info || ''));
+
+                        // Populate Calories Information
+                        $('#display_calories_info').html(marked.parse(response.calories || ''));
+
+                        // Show the result section
+                        $('#result').fadeIn();
+                        // Scroll to the result
+                        $('html, body').animate({
+                            scrollTop: $("#result").offset().top
+                        }, 1000);
+                    },
+                    error: function(xhr) {
+                        if(xhr.responseJSON && xhr.responseJSON.error){
+                            alert('Error: ' + xhr.responseJSON.error);
+                        } else {
+                            alert('An unknown error occurred while transforming the recipe.');
+                        }
+                    }
                 });
             });
+
+            // Helper function to capitalize first letter
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
         });
     </script>
 </body>

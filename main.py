@@ -82,20 +82,26 @@ def transform_recipe():
     Allergy: {allergy}
     Place: {place}"""
     
-    prompt_nutrition = f"""Provide the nutritional information (initial protein and calorie content) for the following recipe:
-    Name: {recipe_name}
-    Recipe: {original_recipe_text}"""
+    
 
     try:
         response = model.generate_content(prompt)
-        transformed_recipe = response.text
+        transform_recipe = response.text
 
         response_costs = model.generate_content(prompt_costs)
         costs_info = response_costs.text
 
+        prompt_nutrition = f"""Provide the nutritional information for the following recipe:
+        Name: {recipe_name}
+        Initial Recipe: {original_recipe_text}
+        Generated Recipe: {transform_recipe}
+        """
+        
         # Call 3: Nutrition information
         response_nutrition = model.generate_content(prompt_nutrition)
         nutrition_info = response_nutrition.text
+
+        transformed_recipe = transform_recipe + f"\n\nCosts Info: {costs_info}\n\nNutrition Info: {nutrition_info}"
 
         return jsonify({
             "costs_info": costs_info,
