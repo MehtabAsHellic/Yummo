@@ -80,21 +80,32 @@ def transform_recipe():
     
     
     
+<<<<<<< HEAD
+=======
+    
+>>>>>>> refs/remotes/origin/main
 
     try:
         response = model.generate_content(prompt)
         transform_recipe = response.text
+<<<<<<< HEAD
 
         prompt_costs = f"""Calculate the cost of preparation for the initial recipe and cost of preparation for the generated recipe in indian rupees in tabular format:
         Name: {recipe_name}
         initial Recipe: {original_recipe_text}
         Generated recipe: {transform_recipe}
         """
+=======
+>>>>>>> refs/remotes/origin/main
 
         response_costs = model.generate_content(prompt_costs)
         costs_info = response_costs.text
 
+<<<<<<< HEAD
         prompt_nutrition = f"""Provide the nutritional information for the initial recipe and for the generated recipe in tabular format:
+=======
+        prompt_nutrition = f"""Provide the nutritional information for the following recipe:
+>>>>>>> refs/remotes/origin/main
         Name: {recipe_name}
         Initial Recipe: {original_recipe_text}
         Generated Recipe: {transform_recipe}
@@ -104,6 +115,7 @@ def transform_recipe():
         response_nutrition = model.generate_content(prompt_nutrition)
         nutrition_info = response_nutrition.text
 
+<<<<<<< HEAD
         calories = f"""calculate the calories for the initial recipe and calories for the generated recipe  in tabular format:
         Name: {recipe_name}
         Initial Recipe: {original_recipe_text}
@@ -119,6 +131,9 @@ def transform_recipe():
         print(costs_info)
         print(nutrition_info)
         print(calories_info)
+=======
+        transformed_recipe = transform_recipe + f"\n\nCosts Info: {costs_info}\n\nNutrition Info: {nutrition_info}"
+>>>>>>> refs/remotes/origin/main
 
         return jsonify({
             "costs_info": costs_info,
